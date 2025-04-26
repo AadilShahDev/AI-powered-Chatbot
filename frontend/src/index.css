@@ -15,3 +15,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+
+.nav-link{
+  @apply text-xl m-2 hover:scale-105 p-2 hover:bg-gray-700 
+}
