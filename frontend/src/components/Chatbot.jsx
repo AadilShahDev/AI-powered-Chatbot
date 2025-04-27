@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown';
 
 function Chatbot() {
 
@@ -6,6 +7,10 @@ function Chatbot() {
   let [query,setQuery] = useState('');
     let [response,setResponse] = useState('')
     let [conversation,setConversation] = useState([])
+
+    useEffect(()=>{
+      setConversation(prev => [...prev, query, response])
+    },[response])
 
     const requestBody = {
     contents: [
@@ -38,10 +43,7 @@ function Chatbot() {
   
         } else {
             setResponse('No response generated.');
-          }
-
-          
-          setConversation(prev => [...prev, query, response])
+          }   
     }
 
     const handleChange = (e) =>{
@@ -51,16 +53,25 @@ function Chatbot() {
 
   return (
     <>
+    <div className='w-[90%] flex flex-col justify-center items-center'>
     <div className='h-[670px] overflow-y-auto p-4'>
-      {conversation.map((item,index)=>(
-        <div key={index} className='bg-gray-200 rounded-xl m-2 p-4' >
-          {item}
+      {conversation.map((item,index)=>( 
+        <div key={index} className='flex flex-col text-xl' >
+          {index%2===0 && index > 2? 
+          <div className='flex bg-gray-100 rounded-xl m-2 p-4 self-end'>{item}</div>
+          :
+          <div className='m-4 p-2'>
+            <ReactMarkdown>{item}</ReactMarkdown>
+          </div>
+          }
         </div>
       ))}
     </div>
-    <div className='fixed bottom-0 flex justify-center items-center border m-4 w-[70%] md:w-[60%] rounded-xl border-gray-700 m-8 p-2' >
+
+    <div className='fixed bottom-0 flex justify-center items-center border m-4 w-[70%] md:w-[55%] sm:w-[50%] rounded-xl border-gray-700 m-8 p-2' >
         <input className='border rounded-xl p-2 m-2 w-[85%]'  type='text' placeholder='Ask anything.....' onChange={handleChange}/>
         <button className='border border-gray-700 w-[20%] ml-0 m-4' onClick={fetchData}>Send</button>
+    </div>
     </div>
     </>
   )
