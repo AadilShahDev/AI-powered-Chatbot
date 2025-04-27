@@ -26,6 +26,6 @@ const conversationSchema = new mongoose.Schema({
   messages: [messageSchema],
 }, { timestamps: true }); // automatically adds createdAt and updatedAt
 
-const Conversation = mongoose.model("Conversations", conversationSchema);
+const Conversation = mongoose.model("conversations", conversationSchema);
 
 module.exports = Conversation;

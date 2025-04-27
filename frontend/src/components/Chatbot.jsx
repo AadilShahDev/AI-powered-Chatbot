@@ -9,8 +9,24 @@ function Chatbot() {
     let [conversation,setConversation] = useState([])
 
     useEffect(()=>{
-      setConversation(prev => [...prev, query, response])
+      setConversation(prev => [...prev, {sender:'user',message:query}, {sender:'bot',message:response}])
+      console.log(conversation)
+      uploadConversation();
     },[response])
+
+    const uploadConversation = async()=>{
+      let result = await fetch("http://localhost:5000/data",{
+        method:'post',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({
+          messages: conversation.filter(c => c.sender && c.message) // Only valid messages
+        })
+      })
+      result = await result.json()
+      console.log("Results :: ",result)
+    }
 
     const requestBody = {
     contents: [
@@ -57,11 +73,11 @@ function Chatbot() {
     <div className='h-[670px] overflow-y-auto p-4'>
       {conversation.map((item,index)=>( 
         <div key={index} className='flex flex-col text-xl' >
-          {index%2===0 && index > 2? 
-          <div className='flex bg-gray-100 rounded-xl m-2 p-4 self-end'>{item}</div>
+          {index%2!==0 && index >2? 
+          <div className='m-4 p-2'><ReactMarkdown>{item.message}</ReactMarkdown></div>
           :
-          <div className='m-4 p-2'>
-            <ReactMarkdown>{item}</ReactMarkdown>
+          <div className='flex bg-gray-100 rounded-xl m-2 p-4 self-end'>
+            {item.message}
           </div>
           }
         </div>
