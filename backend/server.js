@@ -13,9 +13,24 @@ app.get('/',async(req,res)=>{
 })
 
 app.post('/data',async(req,res)=>{
-    const result = new Conversation(req.body)
-    const resu = await result.save()
-    res.send(resu)
+    try{
+        let conversation = await Conversation.findOne().sort({ createdAt: -1 });
+
+        if (conversation) {
+            // update the existing conversation
+            conversation.messages.push(...req.body.messages); // append new messages
+            const updatedConversation = await conversation.save();
+            res.send(updatedConversation);
+          } else {
+            const result = new Conversation(req.body)
+            const resu = await result.save()
+            res.send(resu)
+          }
+
+    }catch (err) {
+        console.error(err);
+        res.status(500).send('Error saving conversation');
+      }
 })
 
 const PORT = process.env.PORT || 5000;

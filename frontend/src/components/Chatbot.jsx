@@ -7,12 +7,22 @@ function Chatbot() {
   let [query,setQuery] = useState('');
     let [response,setResponse] = useState('')
     let [conversation,setConversation] = useState([])
+    let [title,setTitle] = useState("")
 
     useEffect(()=>{
-      setConversation(prev => [...prev, {sender:'user',message:query}, {sender:'bot',message:response}])
-      console.log(conversation)
-      uploadConversation();
+      if(!response) return
+      setConversation(prev => {
+        if (!title && query) {
+          setTitle(query);
+        }
+        return [...prev, { sender: 'user', message: query }, { sender: 'bot', message: response }];
+      })
     },[response])
+
+    useEffect(()=>{
+      if(conversation.length===0)return
+      uploadConversation()
+    },[conversation])
 
     const uploadConversation = async()=>{
       let result = await fetch("http://localhost:5000/data",{
@@ -21,7 +31,8 @@ function Chatbot() {
           'Content-Type':'application/json',
         },
         body:JSON.stringify({
-          messages: conversation.filter(c => c.sender && c.message) // Only valid messages
+          messages: conversation.filter((c) => c.sender && c.message),
+          title:title || query
         })
       })
       result = await result.json()
