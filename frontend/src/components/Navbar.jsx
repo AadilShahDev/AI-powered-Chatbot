@@ -7,10 +7,10 @@ function Navbar() {
     try{
     let data = await fetch('http://localhost:5000')
     if(data){
-      console.log("title:",data.title)
       data = await data.json()
-      setHistory([...history,data.title])
-    }
+     
+       setHistory(data)
+     }
   }catch(err){
     console.log("error : ",err)
   }
@@ -24,13 +24,15 @@ useEffect(()=>{
             <li className='nav-link'><Link to='/'>Home</Link></li>
             <li className='nav-link'><Link to='/chatbot'>Chatbot</Link></li>
             <li className='nav-link'><Link to='/tti'>Text-to-Image</Link></li>
+            <li className='nav-link'><Link to='/signup'>Signup</Link></li>
+            <li className='nav-link'><Link to='/login'>Login</Link></li>
         </ul>
 
 
         <div>
           <i>Past Conversations</i>
           {history.map((title,index)=>(
-            <div className='nav-link' key={index}>{title}</div>
+            <div className='nav-link' key={index}>{title.title}</div>
           ))}
         </div>
     </div>
