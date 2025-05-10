@@ -19,6 +19,10 @@ const conversationSchema = new mongoose.Schema({
     type: String, // or mongoose.Schema.Types.ObjectId if you have User model
     required: false, // optional if you allow anonymous chats
   },
+  chatID:{
+    type:String,
+    required:true,
+  },
   title: {
     type: String,
     required: false,
