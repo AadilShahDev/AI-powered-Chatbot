@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/AadilShahDev/AI-powered-Chatbot.git/static/css/main.5803f682.css",
+    "main.js": "/AadilShahDev/AI-powered-Chatbot.git/static/js/main.e46061d3.js",
+    "index.html": "/AadilShahDev/AI-powered-Chatbot.git/index.html",
+    "main.5803f682.css.map": "/AadilShahDev/AI-powered-Chatbot.git/static/css/main.5803f682.css.map",
+    "main.e46061d3.js.map": "/AadilShahDev/AI-powered-Chatbot.git/static/js/main.e46061d3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5803f682.css",
+    "static/js/main.e46061d3.js"
+  ]
+}
