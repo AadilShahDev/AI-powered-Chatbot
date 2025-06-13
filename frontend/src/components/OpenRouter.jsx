@@ -21,7 +21,7 @@ const OpenRouterDirect = () => {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
