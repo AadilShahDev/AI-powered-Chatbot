@@ -22,7 +22,7 @@ function Navbar() {
 
   const logout = ()=>{
     localStorage.clear()
-    window.dispatchEvent(new Event("authChanged")); // notify App
+    window.dispatchEvent(new Event("authChanged")); // used for navbar rendering logic
     navigate('/login')
   }
 
