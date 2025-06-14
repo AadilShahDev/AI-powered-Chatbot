@@ -34,8 +34,11 @@ let chatCounterSlice = createSlice({
             const { bot } = action.payload;
             state[bot] = [];
         },   
+        putGemini:(state,action)=>{
+            state.gemini = action.payload
+        }
     }
 })
 
-export const {increment,reNewChatID,addMessage, replaceLastMessage, clearChat} = chatCounterSlice.actions
+export const {increment,reNewChatID,addMessage, replaceLastMessage, clearChat,putGemini} = chatCounterSlice.actions
 export default chatCounterSlice.reducer

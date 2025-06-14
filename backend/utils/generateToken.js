@@ -4,7 +4,7 @@ const generateToken = (userId) => {
   return jwt.sign(
     { id: userId },                     // payload
     process.env.JWT_SECRET,            // secret key (put in .env)
-    { expiresIn: '2h' }                // token validity
+    { expiresIn: '7d' }                // token validity
   );
 };
 

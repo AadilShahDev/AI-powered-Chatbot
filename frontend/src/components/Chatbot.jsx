@@ -1,14 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessage, replaceLastMessage } from './redux/newChatSlice';
+import { MessageSquarePlus } from 'lucide-react'
 
 function Gemini() {
   const KEY = process.env.REACT_APP_API_KEY;
   const dispatch = useDispatch();
-  const conversation = useSelector((state) => state.counter.gemini);
+  let conversation = useSelector((state) => state.counter.gemini);
+  const chatID = useSelector((state) => state.counter.chatId);
+  console.log(conversation)
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  let [chatId,setChatId]=useState(chatID)
+  let user = localStorage.getItem('user')
+  user = JSON.parse(user)
+
+  let [res,setRes] = useState('')
+  
+  useEffect(()=>{
+
+    const uplaodConversation = async()=>{
+      const data = await fetch('http://localhost:5000/api/chat/uploadConvo',{
+        method:'post',
+        headers:{
+          'Content-type':'application/json',
+          'authorization':`Bearer ${user.token}`
+        },
+        body:JSON.stringify({
+          userId:user.userId,
+          chatId:chatId,
+          messages:[conversation[conversation.length-2],conversation[conversation.length-1]]
+        })
+      })
+
+      const result = await data.json()
+      console.log("result:",result)
+      setChatId(result.convo._id)
+    }
+    //console.log(conversation[conversation.length-1])
+    uplaodConversation();
+  },[res])
 
   const fetchData = async () => {
     if (!query.trim()) return;
@@ -34,6 +66,7 @@ function Gemini() {
 
       const data = await res.json();
       const responseText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated.';
+      setRes(responseText)
 
       const updatedBotMsg = { sender: 'bot', message: responseText };
       dispatch(replaceLastMessage({ bot: 'gemini', message: updatedBotMsg }));
@@ -48,11 +81,19 @@ function Gemini() {
     setLoading(false);
   };
 
+  const newChat = ()=>{
+    conversation=[]
+    setChatId('')
+  }
+
   return (
     <div className="w-full min-h-screen bg-white flex flex-col items-center justify-start px-4 pt-24 pb-32">
-      <div className="text-3xl font-bold text-center mb-6">Gemini-Powered Chatbot</div>
+      <div className='flex items-center justify-between'>
+        <div className="text-3xl font-bold text-center mb-6">Gemini-Powered Chatbot</div>
+        <MessageSquarePlus className="w-10 h-10" onClick={()=>{newChat()}}/>
+      </div>
 
-      <div className="w-full max-w-4xl h-[600px] overflow-y-auto bg-gray-50 rounded-xl p-6 shadow-inner space-y-4">
+      <div className="w-full max-w-4xl h-[450px] overflow-y-auto bg-gray-50 rounded-xl p-6 shadow-inner space-y-4">
         {conversation.map((item, index) => (
           <div
             key={index}
