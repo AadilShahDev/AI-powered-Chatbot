@@ -72,9 +72,9 @@ function Navbar() {
                 <li>
                   <Link to="/itt" className="hover:text-pink-600 transition">Image-to-text(OCR)</Link>
                 </li>
-                 <li>
+                 {/* <li>
                   <Link to="/profile" className="hover:text-pink-600 transition">Profile</Link>
-                </li>
+                </li> */}
                 
                 {/* <li>
                   <Link to="/vtt" className="hover:text-pink-600 transition">Voice-to-text</Link>
