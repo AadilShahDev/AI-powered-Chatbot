@@ -9,19 +9,19 @@ const messageSchema = new mongoose.Schema({
     type: String,
     required: true,
   }
-}, { _id: false }); // don't create _id for each message
+}, { _id: false }); 
 
 const conversationSchema = new mongoose.Schema({
   userId: {
-    type: String, // or mongoose.Schema.Types.ObjectId if you have User model
-    required: false, // optional if you allow anonymous chats
+    type: String, 
+    required: false, 
   },
   title: {
     type: String,
     required: false,
   },
   messages: [messageSchema],
-}, { timestamps: true }); // automatically adds createdAt and updatedAt
+}, { timestamps: true }); 
 
 const Conversation = mongoose.model("Conversation", conversationSchema);
 

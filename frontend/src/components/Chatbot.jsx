@@ -7,9 +7,10 @@ import { MessageSquarePlus } from 'lucide-react'
 function Gemini() {
   const KEY = process.env.REACT_APP_API_KEY;
   const dispatch = useDispatch();
-  let conversation = useSelector((state) => state.counter.gemini);
+  let convers = useSelector((state) => state.counter.gemini);
+  let [conversation,setConversation] = useState(convers)
   const chatID = useSelector((state) => state.counter.chatId);
-  console.log(conversation)
+  //console.log(conversation)
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   let [chatId,setChatId]=useState(chatID)
@@ -79,10 +80,11 @@ function Gemini() {
       );
     }
     setLoading(false);
+    //setConversation(convers)
   };
 
   const newChat = ()=>{
-    conversation=[]
+    setConversation([])
     setChatId('')
   }
 
@@ -94,7 +96,7 @@ function Gemini() {
       </div>
 
       <div className="w-full max-w-4xl h-[450px] overflow-y-auto bg-gray-50 rounded-xl p-6 shadow-inner space-y-4">
-        {conversation.map((item, index) => (
+        {convers.map((item, index) => (
           <div
             key={index}
             className={`flex ${item.sender === 'user' ? 'justify-end' : 'justify-start'}`}

@@ -60,10 +60,10 @@ function Signp() {
   })
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-700">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-[90%] max-w-md h-[50%]">
-        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">Create Account 🚀</h1>
-        <p className="text-center text-gray-500 mb-8">Join the AI conversation revolution!</p>
+    <div className="min-h-screen flex items-center justify-center bg-brand-dark">
+      <div className="bg-gradient-to-b from-purple-400 via-pink-500 to-my_color p-8 rounded-2xl shadow-lg w-[90%] max-w-md h-[50%] ">
+        <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 font-mono">Create Account 🚀</h1>
+        <p className="text-center text-gray-500 mb-8 ">Join the AI conversation revolution!</p>
 
         <form onSubmit={formik.handleSubmit} className="space-y-6">
           <div>
@@ -115,7 +115,7 @@ function Signp() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-xl transition"
+            className="w-full bg-brand-dark hover:bg-blue-800 text-white font-semibold p-3 rounded-xl transition"
           >
             Sign Up
           </button>

@@ -1,6 +1,6 @@
 const express = require('express')
 const crypto = require('crypto')
-const sendEmail = require('../utils/sendEmail'); // You'll create this
+const sendEmail = require('../utils/sendEmail');
 const UserModel = require('../Models/authModel')
 const generateToken = require('../utils/generateToken')
 const protect = require('../middleware/authMiddleware');
@@ -10,7 +10,7 @@ const router = express.Router()
 router.get('/me', protect, (req, res) => {
   res.status(200).json({
     message: 'Welcome to your profile!',
-    user: req.user // attached from protect middleware
+    user: req.user 
   });
 });
 

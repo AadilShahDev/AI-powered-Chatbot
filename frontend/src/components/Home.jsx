@@ -15,14 +15,13 @@ function Home() {
       </p>
 
       {/* Features section */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl w-full">
-        
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full ">
         {/* Gemini */}
         <div className="bg-pink-50 p-6 rounded-xl shadow hover:shadow-lg transition-all">
           <h2 className="text-2xl font-semibold mb-2">Gemini Chatbot</h2>
           <p className="text-gray-600 mb-4">Chat with a powerful LLM powered by Google Gemini. Great for intelligent answers, writing, and more.</p>
           <Link to="/chatbots/gemini">
-            <button className="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-700" onClick={navigate('/chatbots/gemini')}>
+            <button className="px-4 py-2 bg-pink-600 text-white rounded-full hover:bg-pink-700" >
               Try Gemini
             </button>
           </Link>
