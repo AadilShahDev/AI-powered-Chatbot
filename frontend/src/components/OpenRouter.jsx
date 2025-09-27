@@ -9,8 +9,21 @@ const OpenRouterDirect = () => {
   const conversation = useSelector((state) => state.counter.openrouter);
   const dispatch = useDispatch();
 
+  const OPENROUTER_API_KEY = process.env.REACT_APP_OPENROUTER_API_KEY;
+
+  // Check if API key is properly configured
+  if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your-openrouter-api-key-here') {
+    console.error('⚠️ OpenRouter API key is not configured. Please add your API key to frontend/.env file');
+  }
+
   const handleSend = async () => {
     if (!userInput.trim()) return;
+
+    // Check if API key is configured
+    if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY === 'your-openrouter-api-key-here') {
+      alert('❌ OpenRouter API key is not configured!\n\nPlease:\n1. Get your API key from https://openrouter.ai/keys\n2. Add it to frontend/.env file\n3. Restart the React app');
+      return;
+    }
 
     const userMessage = { sender: 'user', message: userInput };
     dispatch(addMessage({ bot: 'openrouter', message: userMessage }));
@@ -21,7 +34,7 @@ const OpenRouterDirect = () => {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENROUTER_API_KEY}`,
+          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
