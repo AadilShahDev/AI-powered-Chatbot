@@ -7,6 +7,11 @@ import { MessageSquarePlus } from 'lucide-react'
 function Gemini() {
   const KEY = process.env.REACT_APP_API_KEY;
   const dispatch = useDispatch();
+
+  // Check if API key is properly configured
+  if (!KEY || KEY === 'your-gemini-api-key-here') {
+    console.error('⚠️ Gemini API key is not configured. Please add your API key to frontend/.env file');
+  }
   let convers = useSelector((state) => state.counter.gemini);
   let [conversation,setConversation] = useState(convers)
   const chatID = useSelector((state) => state.counter.chatId);
@@ -20,31 +25,43 @@ function Gemini() {
   let [res,setRes] = useState('')
   
   useEffect(()=>{
+    if (!res || conversation.length < 2) return;
 
     const uplaodConversation = async()=>{
-      const data = await fetch('http://localhost:5000/api/chat/uploadConvo',{
-        method:'post',
-        headers:{
-          'Content-type':'application/json',
-          'authorization':`Bearer ${user.token}`
-        },
-        body:JSON.stringify({
-          userId:user.userId,
-          chatId:chatId,
-          messages:[conversation[conversation.length-2],conversation[conversation.length-1]]
+      try {
+        const data = await fetch('http://localhost:4000/api/chat/uploadConvo',{
+          method:'post',
+          headers:{
+            'Content-type':'application/json',
+            'authorization':`Bearer ${user.token}`
+          },
+          body:JSON.stringify({
+            userId:user._id,
+            chatId:chatId,
+            messages:[conversation[conversation.length-2],conversation[conversation.length-1]]
+          })
         })
-      })
 
-      const result = await data.json()
-      console.log("result:",result)
-      setChatId(result.convo._id)
+        const result = await data.json()
+        console.log("result:",result)
+        if (result.convo && result.convo._id) {
+          setChatId(result.convo._id)
+        }
+      } catch (error) {
+        console.error('Error uploading conversation:', error);
+      }
     }
-    //console.log(conversation[conversation.length-1])
     uplaodConversation();
-  },[res])
+  },[res, conversation, chatId, user.token, user._id])
 
   const fetchData = async () => {
     if (!query.trim()) return;
+
+    // Check if API key is configured
+    if (!KEY || KEY === 'your-gemini-api-key-here') {
+      alert('❌ Gemini API key is not configured!\n\nPlease:\n1. Get your API key from https://makersuite.google.com/app/apikey\n2. Add it to frontend/.env file\n3. Restart the React app');
+      return;
+    }
 
     const userMsg = { sender: 'user', message: query };
     const botPlaceholder = { sender: 'bot', message: 'Typing...' };

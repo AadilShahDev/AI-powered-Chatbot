@@ -14,7 +14,7 @@ function Navbar() {
     else{
       setToggle(false)
     }
-  })
+  }, [auth])
 
   // const toggleSidebar = () => {
   //   setToggle(!toggle);

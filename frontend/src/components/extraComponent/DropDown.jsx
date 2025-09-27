@@ -13,7 +13,7 @@ const Dropdown = ({label = "History" }) => {
   user = JSON.parse(user)
 
   const GeminiAllConvos = async()=>{
-    const allConvos = await fetch(`http://localhost:5000/api/chat/allConvos/${user.userId}`,{
+    const allConvos = await fetch(`http://localhost:4000/api/chat/allConvos/${user._id}`,{
       method:'get',
       headers:{
         'content-type':"application/json",
@@ -26,7 +26,7 @@ const Dropdown = ({label = "History" }) => {
   }
 
   const GeminiOneConvo = async(chatId)=>{
-    const oneConvo = await fetch(`http://localhost:5000/api/chat/getConvo/${user.userId}/${chatId}`,{
+    const oneConvo = await fetch(`http://localhost:4000/api/chat/getConvo/${user._id}/${chatId}`,{
       method:'get',
       headers:{
         'content-type':"application/json",
