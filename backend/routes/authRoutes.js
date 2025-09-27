@@ -99,6 +99,7 @@ router.get('/verify-email/:token', async (req, res) => {
 
 
 router.post('/signup',async(req,res)=>{
+    console.log('Signup request body:', req.body);
     const {name,email,password} = req.body
     try{
         const userExists = await UserModel.findOne({ email });
@@ -117,17 +118,28 @@ router.post('/signup',async(req,res)=>{
         });
 
 
+        // For development: Auto-verify email to skip email service setup
+        user.emailVerified = true;
+        user.emailVerificationToken = undefined;
+        user.emailVerificationExpires = undefined;
+        
         user = await user.save()
         
-        const confirmUrl = `http://localhost:5000/api/auth/verify-email/${emailToken}`;
+        // Skip email sending in development
+        // const confirmUrl = `http://localhost:4000/api/auth/verify-email/${emailToken}`;
+        // await sendEmail({
+        //   to: email,
+        //   subject: 'Email Verification', 
+        //   text: `Click to verify your email: ${confirmUrl}`
+        // });
 
-         await sendEmail({
-          to: email,
-          subject: 'Email Verification',
-          text: `Click to verify your email: ${confirmUrl}`
+        res.status(200).json({ 
+          message: 'User registered successfully! (Email auto-verified for development)',
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          token: generateToken(user._id)
         });
-
-        res.status(200).json({ message: 'Verification email sent' });
 
         // res.send({
         //     _id: user._id,
@@ -144,14 +156,16 @@ router.post('/signup',async(req,res)=>{
 })
 
 router.post('/login',async(req,res)=>{
+  console.log('Login request body:', req.body);
   const {email,password} = req.body
      try {
     // select password explicitly
     const user = await UserModel.findOne({ email }).select('+password');
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const emailVerified = user.emailVerified
-    if(!emailVerified) return res.status(400).json({message:'Account is not verified'})
+    // Email verification check disabled for development
+    // const emailVerified = user.emailVerified
+    // if(!emailVerified) return res.status(400).json({message:'Account is not verified'})
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
