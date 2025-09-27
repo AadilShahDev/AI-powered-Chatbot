@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/AIChatbot", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    // URL-encoded password: @ becomes %40
+    const mongoURI = process.env.MONGODB_URI || "mongodb+srv://alirazamemon_db_user:bsaiF22%40IBA@aichatbot.6fwzef7.mongodb.net/?retryWrites=true&w=majority&appName=AIChatbot";
+    
+    await mongoose.connect(mongoURI);
     console.log("✅ MongoDB connected");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err.message);
@@ -15,3 +15,9 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
+
+
+
+// Username:alirazamemon_db_user
+// Pass:bsaiF22@IBA
